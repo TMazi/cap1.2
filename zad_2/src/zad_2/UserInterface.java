@@ -6,32 +6,44 @@ import java.util.Scanner;
 public class UserInterface {
 
 	private static Scanner scan;
+	private final static String defaultSaveFilePath = "C:/users/tmazurek/desktop/grupy/uczestnicy_";
 
 	public static void main(String[] args) {
 		boolean finished = false;
 		String input;
 		scan = new Scanner(System.in);
 		List<Person> participians;
-		LoadSavePeople lsp = new LoadSavePeople();
-		participians = lsp.loadData();
+		LoadSavePeople lsp;
 
-		while (!finished) {
-			System.out.println("Aby wybrac osoby o nazwiskach na dana litere, wpisz ja i potwierdz enterem");
-			System.out.println("Aby podzielic ludzi na grupy o danej wielkosci, wpisz liczbe i potwierdz enterem");
-			input = scan.nextLine();
+		System.out.println(
+				"Podaj sciezke do zapisu plikow lub nacisnij enter, aby uzyc domyslnej: " + defaultSaveFilePath);
+		String path = scan.nextLine();
 
-			try {
+		try {
+
+			if (path.length() < 1)
+				lsp = new LoadSavePeople(defaultSaveFilePath);
+			else
+				lsp = new LoadSavePeople(path);
+			participians = lsp.loadData();
+
+			while (!finished) {
+				System.out.println("Aby wybrac osoby o nazwiskach na dana litere, wpisz ja i potwierdz enterem");
+				System.out.println("Aby podzielic ludzi na grupy o danej wielkosci, wpisz liczbe i potwierdz enterem");
+				input = scan.nextLine();
+
 				Checker check = new Checker(input, participians, participians.size());
-				check.processPeople();
-				finished = true;
-			}
-
-			catch (RuntimeException e) {
-				System.out.println(e.getMessage());
-				finished = false;
+				if (check.processPeople()) {
+					System.out.println("Pomyslnie zapisano do pliku");
+					finished = true;
+				}
 			}
 		}
 
+		catch (RuntimeException e) {
+			System.out.println(e.getMessage());
+			finished = false;
+		}
 	}
 
 }

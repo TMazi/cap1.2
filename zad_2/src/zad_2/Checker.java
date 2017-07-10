@@ -23,8 +23,8 @@ public class Checker {
 			throw new WrongInputException("Nieprawidlowe dane wejsciowe!");
 	}
 
-	public void processPeople() {
-		dt.transformAndSave();
+	public boolean processPeople() {
+		return dt.transformAndSave();
 	}
 
 }

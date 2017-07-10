@@ -17,14 +17,17 @@ public class LoadSavePeople {
 
 	private final String defaultLoadFilePath = "C:/users/tmazurek/desktop/konferencja.csv";
 	private final String defaultSaveFilePath = "C:/users/tmazurek/desktop/grupy/uczestnicy_";
+	private String saveFilePath;
 	private String loadFilePath;
 
 	public LoadSavePeople() {
 		loadFilePath = defaultLoadFilePath;
+		saveFilePath = defaultSaveFilePath;
 	}
 
-	public LoadSavePeople(String loadFilePath) {
-		this.loadFilePath = loadFilePath;
+	public LoadSavePeople(String saveFilePath) {
+		loadFilePath = defaultLoadFilePath;
+		this.saveFilePath = saveFilePath;
 	}
 
 	public List<Person> loadData() {
@@ -55,8 +58,9 @@ public class LoadSavePeople {
 
 	public void saveData(ArrayList<Person> people, Object postfix) {
 
-		save(people, defaultSaveFilePath + postfix.toString() + ".csv");
-		display(people);
+		save(people, saveFilePath + postfix.toString() + ".csv");
+		if(postfix instanceof Character)
+			display(people);
 	}
 
 	private void save(ArrayList<Person> people, String path) {

@@ -24,7 +24,8 @@ public class DataTransformer {
 
 	}
 
-	public void transformAndSave() throws RuntimeException {
+	public boolean transformAndSave() throws RuntimeException {
+		boolean result = false;
 		LoadSavePeople lsp = new LoadSavePeople();
 		ArrayList<Person> temp = new ArrayList<>();
 		if( input instanceof Integer) {
@@ -37,6 +38,7 @@ public class DataTransformer {
 				lsp.saveData(temp, i+1);
 				temp.clear();
 			}
+			result = true;
 		}
 		else if (input instanceof Character) {
 			peopleLastNameStartWith((char) input);
@@ -44,7 +46,9 @@ public class DataTransformer {
 				throw new RuntimeException("Nie ma ludzi o nazwisku na taka litere!");
 			sort();
 			lsp.saveData(people, input);
+			result = true;
 		}
+		return result;
 	}
 
 	public List<Person> sort() {
